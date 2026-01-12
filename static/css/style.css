@@ -1,3 +1,13 @@
+/*
+ * Stylesheet for the Wrath of the Lich King inspired fan site.
+ *
+ * This CSS file defines the look and feel of the site, including
+ * typography, layout, navigation bar styling, and a dramatic hero
+ * section with a dark, icy background image.  The color palette
+ * emphasizes deep blues and purples with icy highlights to evoke
+ * Northrend's chilling atmosphere.
+ */
+
 /* Reset basic margin and set default font and background */
 body {
   margin: 0;
@@ -64,6 +74,14 @@ body {
 .hero h1 {
   font-size: 3rem;
   margin: 0;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
+
+/* Subheading beneath the main hero heading */
+.hero h2 {
+  font-size: 2rem;
+  margin: 10px 0 0 0;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
   z-index: 1;
 }
