@@ -7,11 +7,14 @@ services:
     container_name: portfolio-app
     restart: unless-stopped
     environment:
-      - FLASK_ENV=production
+      FLASK_ENV: production
+      DATABASE_PASSWORD_FILE: /run/secrets/db_password
     depends_on:
       - db
     networks:
       - backend
+    secrets:
+      - db_password
 
   nginx:
     image: nginx:1.25
@@ -31,16 +34,22 @@ services:
     container_name: portfolio-db
     restart: unless-stopped
     environment:
-      - POSTGRES_DB=portfolio
-      - POSTGRES_USER=portfolio_user
-      - POSTGRES_PASSWORD=change_me
+      POSTGRES_DB: portfolio
+      POSTGRES_USER: portfolio_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
       - backend
+    secrets:
+      - db_password
 
 volumes:
   db_data:
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
 
 networks:
   backend:
