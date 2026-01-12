@@ -4,7 +4,7 @@ services:
   app:
     build:
       context: ./app
-    container_name: portfolio-app
+    container_name: gabadueka-app
     restart: unless-stopped
     environment:
       FLASK_ENV: production
@@ -18,7 +18,7 @@ services:
 
   nginx:
     image: nginx:1.25
-    container_name: portfolio-nginx
+    container_name: gabadueka-nginx
     restart: unless-stopped
     ports:
       - "80:80"
@@ -31,7 +31,7 @@ services:
 
   db:
     image: postgres:16
-    container_name: portfolio-db
+    container_name: gabadueka-db
     restart: unless-stopped
     environment:
       POSTGRES_DB: portfolio
