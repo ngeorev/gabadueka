@@ -1,36 +1,49 @@
-from flask import Flask
-
+from flask import Flask, render_template_string, url_for
 
 def create_app() -> Flask:
-    """Factory function to create and configure the Flask application.
-
-    Returns:
-        Flask: Configured Flask application instance.
-    """
+    """Factory function to create and configure the Flask application."""
     app = Flask(__name__)
 
     @app.route("/")
     def index() -> str:
-        """Home page route that returns a simple HTML response."""
-        return """
-        <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <title>My Portfolio</title>
-            </head>
-            <body>
-                <h1>Welcome to my portfolio!</h1>
-                <p>This is a simple Flask application served behind Nginx and Gunicorn, maybe I haven't done the change right.</p>
-                <p> Also it is using Jenkins pipeline with webhook to deploy the app. Cool isn't it !?</p>
-            </body>
-        </html>
-        """
+        """Home page route that returns a rich HTML response."""
+        stylesheet = url_for("static", filename="css/style.css")
+        return render_template_string(
+            """
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wrath of the Lich King Fan Site</title>
+    <link rel="stylesheet" href="{{ stylesheet }}">
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">WotLK</div>
+      <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Lore</a>
+        <a href="#">Gallery</a>
+        <a href="#">Contact</a>
+      </div>
+    </nav>
+    <section class="hero">
+      <h1>Wrath of the Lich King</h1>
+      <p>Embark on an epic journey through the frozen lands of Northrend. Face the armies
+        of the Scourge and confront the Lich King himself!</p>
+      <a href="#" class="btn">Enter the Frozen Throne</a>
+    </section>
+  </body>
+</html>
+            """,
+            stylesheet=stylesheet,
+        )
 
     return app
-
 
 if __name__ == "__main__":
     # When running directly, create the app and serve it with Flask's built‑in server.
     # In production, Gunicorn will import `create_app` and serve the app.
     app = create_app()
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
