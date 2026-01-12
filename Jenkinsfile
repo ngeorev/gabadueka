@@ -16,18 +16,13 @@ pipeline {
     REGISTRY   = credentials('docker-registry')
     IMAGE_NAME = 'portfolio-app'
 
-    // SSH credential ID for connecting to the web server
+    // Jenkins credentials
     SSH_CRED   = 'web-server-ssh'
-
-    // Compose project directory on the server
-    REMOTE_DIR = '/opt/portfolio_site'
   }
 
   stages {
     stage('Checkout') {
-      steps {
-        checkout scm
-      }
+      steps { checkout scm }
     }
 
     stage('Set Build Vars') {
@@ -56,7 +51,6 @@ pipeline {
 
     stage('Build Image') {
       steps {
-        // Use shell variables to avoid Groovy interpolation of secrets
         sh '''#!/bin/bash -e
           docker build -t "$IMAGE_TAG" -f app/Dockerfile app
         '''
@@ -80,18 +74,30 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        // No ssh-agent, no ssh-add, no libcrypto issues
-        withCredentials([sshUserPrivateKey(
-          credentialsId: 'web-server-ssh',
-          keyFileVariable: 'SSH_KEY',
-          usernameVariable: 'SSH_USER'
-        )]) {
-          sh '''#!/bin/bash -e
-            ssh -i "$SSH_KEY" \
-                -o StrictHostKeyChecking=no \
-                "$SSH_USER@$SERVER_HOST" \
-                "cd '$REMOTE_DIR' && git pull && docker compose pull && docker compose up -d"
-          '''
+        // Pull SERVER_HOST and REMOTE_DIR from Folder Properties (Property List)
+        withFolderProperties {
+          script {
+            if (!env.SERVER_HOST?.trim()) {
+              error("SERVER_HOST is empty. Set it in Folder Properties -> Property List (Name=SERVER_HOST).")
+            }
+            if (!env.REMOTE_DIR?.trim()) {
+              error("REMOTE_DIR is empty. Set it in Folder Properties -> Property List (Name=REMOTE_DIR).")
+            }
+            echo "Deploy target: ${env.SERVER_HOST} | dir: ${env.REMOTE_DIR}"
+          }
+
+          withCredentials([sshUserPrivateKey(
+            credentialsId: "${SSH_CRED}",
+            keyFileVariable: 'SSH_KEY',
+            usernameVariable: 'SSH_USER'
+          )]) {
+            sh '''#!/bin/bash -e
+              ssh -i "$SSH_KEY" \
+                  -o StrictHostKeyChecking=no \
+                  "$SSH_USER@$SERVER_HOST" \
+                  "cd '$REMOTE_DIR' && git pull && docker compose pull && docker compose up -d"
+            '''
+          }
         }
       }
     }
