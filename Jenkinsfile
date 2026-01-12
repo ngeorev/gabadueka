@@ -22,7 +22,9 @@ pipeline {
 
   stages {
     stage('Checkout') {
-      steps { checkout scm }
+      steps {
+        checkout scm
+      }
     }
 
     stage('Set Build Vars') {
@@ -87,13 +89,16 @@ pipeline {
           }
 
           withCredentials([sshUserPrivateKey(
-            credentialsId: "${SSH_CRED}",
+            credentialsId: 'web-server-ssh',
             keyFileVariable: 'SSH_KEY',
             usernameVariable: 'SSH_USER'
           )]) {
             sh '''#!/bin/bash -e
+              echo "SSH target: $SSH_USER@$SERVER_HOST"
               ssh -i "$SSH_KEY" \
+                  -o BatchMode=yes \
                   -o StrictHostKeyChecking=no \
+                  -o UserKnownHostsFile=/dev/null \
                   "$SSH_USER@$SERVER_HOST" \
                   "cd '$REMOTE_DIR' && git pull && docker compose pull && docker compose up -d"
             '''
