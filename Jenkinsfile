@@ -7,6 +7,7 @@
  * Jenkins credentials store.  The pipeline uses environment variables defined
  * in the Jenkins job (e.g., REGISTRY, IMAGE_NAME, SERVER_HOST, SERVER_USER).
  */
+
 pipeline {
     agent any
 
@@ -43,14 +44,20 @@ pipeline {
             agent {
                 docker {
                     image 'python:3.12-slim'
-                    // optional: run as root so pip installs don't fail in some images
                     args '-u root:root'
                 }
             }
             steps {
                 sh 'python -V'
                 sh 'pip install -r app/requirements.txt pytest'
-                sh 'pytest -q tests'
+
+                // (Optional but helpful while debugging)
+                sh 'pwd'
+                sh 'ls -la'
+                sh 'ls -la app'
+
+                // ✅ Fix: ensure repo root is on Python import path
+                sh 'PYTHONPATH="$WORKSPACE" pytest -q tests'
             }
         }
 
