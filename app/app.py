@@ -1,3 +1,13 @@
+"""
+Flask application configured with a gaming‑oriented front‑end inspired by
+Wrath of the Lich King.  This app defines a single route that renders
+an HTML page with a hero section, navigation links, and a dark, icy
+background to evoke the atmosphere of Northrend.
+
+To run the application directly, execute this module.  In a production
+environment, Gunicorn or another WSGI server should import and call
+``create_app``.
+"""
 from flask import Flask, render_template_string, url_for
 
 def create_app() -> Flask:
