@@ -14,7 +14,7 @@ pipeline {
   environment {
     // Secret text credential: docker.io/<username>
     REGISTRY   = credentials('docker-registry')
-    IMAGE_NAME = 'portfolio-app'
+    IMAGE_NAME = 'gabadueka'
 
     // Jenkins credentials
     SSH_CRED   = 'web-server-ssh'
