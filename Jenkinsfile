@@ -53,8 +53,10 @@ pipeline {
 
     stage('Build Image') {
       steps {
-        sh '''#!/bin/bash -e
+        sh '''
+          #!/bin/bash -e
           docker build -t "$IMAGE_TAG" -f app/Dockerfile app
+          docker tag "$IMAGE_TAG" "$REGISTRY/$IMAGE_NAME:latest"
         '''
       }
     }
@@ -69,6 +71,7 @@ pipeline {
           sh '''#!/bin/bash -e
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
             docker push "$IMAGE_TAG"
+            docker push "$REGISTRY/$IMAGE_NAME:latest"
           '''
         }
       }
