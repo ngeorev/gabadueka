@@ -14,4 +14,4 @@ def test_index(client):
     """Ensure that the index page returns HTTP 200 and contains welcome text."""
     response = client.get("/")
     assert response.status_code == 200
-    assert b"Welcome to my portfolio" in response.data
+    assert b"Wrath of the Lich King" in response.data
