@@ -21,6 +21,7 @@ def create_app() -> Flask:
             <body>
                 <h1>Welcome to my portfolio!</h1>
                 <p>This is a simple Flask application served behind Nginx and Gunicorn.</p>
+                <p> Also it is using Jenkins pipeline with webhook to deploy the app. Cool isn't it !?</p>
             </body>
         </html>
         """
