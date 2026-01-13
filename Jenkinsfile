@@ -54,7 +54,7 @@ pipeline {
       steps {
         sh '''
           #!/bin/bash -e
-          docker build -t "$IMAGE_TAG" -f app/Dockerfile app
+          docker build -t "$IMAGE_TAG" -f app/Dockerfile .
           docker tag "$IMAGE_TAG" "$REGISTRY/$IMAGE_NAME:latest"
         '''
       }
