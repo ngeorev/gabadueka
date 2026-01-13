@@ -47,7 +47,6 @@ pipeline {
       steps {
         sh 'python -V'
         sh 'pip install -r app/requirements.txt pytest'
-        sh 'PYTHONPATH="$WORKSPACE" pytest -q tests'
       }
     }
 
