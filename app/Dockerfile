@@ -27,6 +27,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy application code
 COPY . .
 
+# ✅ Copy static assets from repo root into /app/static
+COPY ../static /app/static
+
 # Expose port for gunicorn
 EXPOSE 5000
 
