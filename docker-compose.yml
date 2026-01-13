@@ -1,0 +1,7 @@
+services:
+  web:
+    image: ${REGISTRY}/${IMAGE_NAME}:latest
+    container_name: lichking-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
