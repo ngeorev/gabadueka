@@ -35,4 +35,4 @@ EXPOSE 5000
 
 # The default command runs gunicorn with four worker processes.  The
 # application factory is loaded from the app module.
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:create_app()"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "wsgi:create_app()"]
