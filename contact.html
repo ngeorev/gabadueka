@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact – DevOps Lab</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <img src="assets/images/FinalLogo.jpg" alt="DevOps Lab Logo">
+            <div class="brand-text">
+                <div class="name">DevOps&nbsp;Lab</div>
+                <div class="tagline">Modern infrastructure • Premium experience</div>
+            </div>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="training.html">Training</a>
+            <a href="contact.html" class="active">Contact</a>
+        </nav>
+    </header>
+
+    <section class="content-section" style="max-width: 800px; margin: 40px auto; padding: 0 24px;">
+        <h2 style="margin-bottom: 16px; font-size: 32px;">Contact</h2>
+        <p style="margin-bottom: 24px; color: var(--secondary-text);">If you want to get in touch, send me a message using the form below:</p>
+        <form action="#" method="post" style="display: flex; flex-direction: column; gap: 16px;">
+            <div>
+                <label for="name">Name</label><br>
+                <input id="name" type="text" name="name" style="width:100%; padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:#090a13; color: var(--primary-text);" required>
+            </div>
+            <div>
+                <label for="email">Email</label><br>
+                <input id="email" type="email" name="email" style="width:100%; padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:#090a13; color: var(--primary-text);" required>
+            </div>
+            <div>
+                <label for="message">Message</label><br>
+                <textarea id="message" name="message" rows="5" style="width:100%; padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:#090a13; color: var(--primary-text);"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Send</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 DevOps Lab.</p>
+    </footer>
+</body>
+</html>

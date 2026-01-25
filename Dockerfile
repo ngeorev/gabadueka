@@ -1,38 +1,14 @@
-# -------------------------
-# 1. Build stage
-# -------------------------
-FROM node:20-alpine AS builder
+FROM nginx:alpine
 
-WORKDIR /app
+RUN apk add --no-cache php php-fpm php-mysqli php-json
 
-COPY package*.json ./
-RUN npm install --production=false
+RUN mkdir -p /run/nginx
 
-COPY . .
-RUN npm run build
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY . /var/www/html
 
-# -------------------------
-# 2. Production stage
-# -------------------------
-FROM node:20-alpine AS runner
+RUN sed -i 's|;listen = 127.0.0.1:9000|listen = 9000|' /etc/php*/php-fpm.d/www.conf
 
-WORKDIR /app
+EXPOSE 80
 
-ENV NODE_ENV=production
-
-COPY --from=builder /app/package*.json ./
-RUN npm install --production
-
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/styles ./styles
-COPY --from=builder /app/pages ./pages
-COPY --from=builder /app/components ./components
-
-# Ensure data directory persists
-RUN mkdir -p /app/data
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
-
+CMD php-fpm & nginx -g "daemon off;"

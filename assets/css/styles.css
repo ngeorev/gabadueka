@@ -1,0 +1,392 @@
+/*
+ * Custom styles for the modern DevOps Lab website.
+ * Uses a dark theme with neon green accents. A broken‑grid layout is achieved
+ * with CSS Grid and variable column/row spans to create a dynamic feel.
+ */
+
+/* CSS Variables for easy colour management */
+:root {
+    --bg-color: #050509;
+    --primary-text: #e6e7fb;
+    --secondary-text: #9da0b8;
+    --accent1: #4df3a3;
+    --accent2: #19b67f;
+    --card-bg: rgba(18, 18, 28, 0.95);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
+    background: var(--bg-color);
+    color: var(--primary-text);
+    line-height: 1.6;
+}
+
+/* Header and navigation */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(5, 5, 9, 0.96);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand img {
+    max-height: 48px;
+    width: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
+}
+
+.brand-text .name {
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.brand-text .tagline {
+    font-size: 13px;
+    color: var(--secondary-text);
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+nav a {
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    color: var(--primary-text);
+    border: 1px solid transparent;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-1px);
+}
+
+nav a.active {
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    color: var(--bg-color);
+    font-weight: 600;
+}
+
+/* Hero section */
+.hero {
+    max-width: 1100px;
+    margin: 40px auto 60px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+    gap: 32px;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: 44px;
+    line-height: 1.15;
+    margin-bottom: 16px;
+}
+
+.hero p {
+    font-size: 16px;
+    color: var(--secondary-text);
+    margin-bottom: 24px;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease,
+        color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    color: var(--bg-color);
+    box-shadow: 0 12px 30px rgba(25, 182, 127, 0.35);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 34px rgba(25, 182, 127, 0.45);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--primary-text);
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Stat card */
+.stat-card {
+    background: radial-gradient(circle at top left, rgba(77, 243, 163, 0.16), transparent),
+                var(--card-bg);
+    border-radius: 16px;
+    padding: 18px 20px;
+    min-width: 240px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.stat-card .label {
+    font-size: 13px;
+    color: var(--secondary-text);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+}
+
+.stat-card .value {
+    margin-top: 8px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.stat-card .note {
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--secondary-text);
+}
+
+/* Grid section */
+.grid-section {
+    max-width: 1100px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-auto-rows: minmax(200px, auto);
+    gap: 32px;
+}
+
+.grid-item {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    overflow: hidden;
+}
+
+.grid-item h3 {
+    margin-bottom: 12px;
+    font-size: 20px;
+}
+
+.grid-item p {
+    font-size: 14px;
+    color: var(--secondary-text);
+}
+
+/* Classes to create broken-grid effect by spanning items */
+.item-span-2 {
+    grid-column: span 2;
+}
+
+.item-row-span-2 {
+    grid-row: span 2;
+}
+
+/* Quiz section */
+.quiz-section {
+    text-align: center;
+    margin-top: 40px;
+}
+
+#quiz-container {
+    display: none;
+    max-width: 600px;
+    margin: 20px auto;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Each question block will be hidden until activated */
+.question-block {
+    display: none;
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.question-block.active {
+    display: block;
+}
+
+.question-block h4 {
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.question-block input[type="text"],
+.question-block input[type="password"],
+.question-block textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: #090a13;
+    color: var(--primary-text);
+}
+
+.question-block .options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 6px;
+}
+
+.question-block .options label {
+    margin-bottom: 4px;
+    cursor: pointer;
+}
+
+.question-block .options input {
+    margin-right: 8px;
+}
+
+/* Timer display */
+.timer {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--accent1);
+}
+
+/* Completion message styling */
+.quiz-complete {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 18px;
+}
+
+/* Password modal styling */
+.password-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.password-modal .modal-content {
+    background: var(--card-bg);
+    padding: 24px;
+    border-radius: 12px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.password-modal input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: #090a13;
+    color: var(--primary-text);
+}
+
+.password-modal button {
+    margin-top: 10px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 40px 0 60px;
+    color: var(--secondary-text);
+    font-size: 14px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 900px) {
+    .hero {
+        grid-template-columns: 1fr;
+        margin-top: 24px;
+    }
+    nav {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero h1 {
+        font-size: 32px;
+    }
+    .brand-text .name {
+        font-size: 16px;
+    }
+    .brand img {
+        max-height: 40px;
+    }
+
+    /* Make grid cards smaller on mobile and avoid spanning multiple columns/rows */
+    .grid-section {
+        grid-auto-rows: minmax(150px, auto);
+    }
+    .grid-item {
+        padding: 16px;
+    }
+    .item-span-2 {
+        grid-column: span 1;
+    }
+    .item-row-span-2 {
+        grid-row: span 1;
+    }
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Lab – Modern</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script defer src="assets/js/script.js"></script>
+</head>
+<body>
+    <!-- Top navigation / brand -->
+    <header>
+        <div class="brand">
+            <img src="assets/images/FinalLogo.jpg" alt="DevOps Lab Logo">
+            <div class="brand-text">
+                <div class="name">DevOps&nbsp;Lab</div>
+                <div class="tagline">Modern infrastructure • Premium experience</div>
+            </div>
+        </div>
+        <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="about.html">About</a>
+            <a href="training.html">Training</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Hero section -->
+    <section class="hero">
+        <div>
+            <h1>DevOps, but make it aesthetic.</h1>
+            <p>A clean, training‑style front end powered by serious infrastructure behind the scenes: automation, monitoring, containers and more.</p>
+            <div class="actions">
+                <a href="projects.html" class="btn btn-primary">View infrastructure projects</a>
+                <a href="about.html" class="btn btn-outline">About the lab</a>
+            </div>
+        </div>
+        <div>
+            <div class="stat-card">
+                <div class="label">Server uptime</div>
+                <div class="value" id="uptime">Always on</div>
+                <div class="note">Always evolving.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Broken grid-style highlights -->
+    <section class="grid-section">
+        <div class="grid-item item-span-2">
+            <h3>Consistency</h3>
+            <p>Small improvements over time lead to big gains. Whether in the gym or in the datacenter, staying consistent is key.</p>
+        </div>
+        <div class="grid-item">
+            <h3>Automation</h3>
+            <p>Remove friction. Build systems that handle the boring stuff so you can focus on what matters.</p>
+        </div>
+        <div class="grid-item">
+            <h3>Measurability</h3>
+            <p>Track progress with real data. Logs, metrics and a stopwatch will tell you what works – and what doesn’t.</p>
+        </div>
+        <div class="grid-item item-row-span-2">
+            <h3>Performance</h3>
+            <p>Optimize the bottlenecks. Whether it’s code or training, pushing the slow parts is how you break plateaus.</p>
+        </div>
+    </section>
+
+    <!-- Quiz trigger -->
+    <section class="quiz-section">
+        <button id="izzaza-button" class="btn btn-primary">izzaza</button>
+        
+        <!-- Password modal -->
+        <div class="password-modal" id="password-modal">
+            <div class="modal-content">
+                <h3>Enter Password</h3>
+                <input type="password" id="quiz-password" placeholder="Password"/>
+                <button id="password-submit" class="btn btn-primary">Enter</button>
+            </div>
+        </div>
+        
+        <!-- Quiz container (questions will show one at a time) -->
+        <div id="quiz-container">
+            <h3>DevOps Quiz</h3>
+            <!-- Question 1 -->
+            <div id="question1" class="question-block">
+                <h4>1. Which of the following is a containerization platform?</h4>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="A"> A) Docker</label>
+                    <label><input type="radio" name="q1" value="B"> B) Git</label>
+                    <label><input type="radio" name="q1" value="C"> C) Nginx</label>
+                </div>
+                <div class="timer" id="timer1"></div>
+                <button class="btn btn-outline next-btn" data-next="2">Next</button>
+            </div>
+            <!-- Question 2 -->
+            <div id="question2" class="question-block">
+                <h4>2. What does CI in CI/CD stand for?</h4>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="A"> A) Continuous Integration</label>
+                    <label><input type="radio" name="q2" value="B"> B) Code Improvement</label>
+                    <label><input type="radio" name="q2" value="C"> C) Container Injection</label>
+                </div>
+                <div class="timer" id="timer2"></div>
+                <button class="btn btn-outline next-btn" data-next="3">Next</button>
+            </div>
+            <!-- Question 3 -->
+            <div id="question3" class="question-block">
+                <h4>3. In your own words, why is automation important in DevOps?</h4>
+                <input type="text" name="q3" />
+                <div class="timer" id="timer3"></div>
+                <button class="btn btn-outline finish-btn">Finish</button>
+            </div>
+            <!-- Completion message -->
+            <div id="quiz-complete" class="quiz-complete" style="display:none;">
+                <h4>Congratulations! 💃</h4>
+                <p>You’ve completed the quiz.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 DevOps Lab. Built with passion and a broken grid.</p>
+    </footer>
+</body>
+</html>
