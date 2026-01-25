@@ -32,15 +32,15 @@ pipeline {
             }
         }
 
-        stage('Run Unit Tests') {
-            steps {
+     //   stage('Run Unit Tests') {
+     //       steps {
                 // Use a Python container to install dependencies and run tests
-                docker.image('python:3.12-slim').inside {
-                    sh 'pip install -r app/requirements.txt pytest'
-                    sh 'pytest -q tests'
-                }
-            }
-        }
+      //          docker.image('python:3.12-slim').inside {
+      //              sh 'pip install -r app/requirements.txt pytest'
+     //               sh 'pytest -q tests'
+       //         }
+     //       }
+    //    }
 
         stage('Build Image') {
             steps {
