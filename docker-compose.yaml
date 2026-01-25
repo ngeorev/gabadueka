@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   web:
-    image: ${REGISTRY:gabadueka}/gabadueka:latest
+    image: gabadueka/gabadueka:latest
     container_name: gabadueka
     ports:
       - "80:80"
