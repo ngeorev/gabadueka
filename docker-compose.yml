@@ -1,0 +1,12 @@
+services:
+  webapp:
+    build: .
+    container_name: devops-lab
+    restart: unless-stopped
+    ports:
+      - "80:3000"
+    volumes:
+      - quizdata:/app/data
+
+volumes:
+  quizdata:
