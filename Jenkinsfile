@@ -1,72 +1,42 @@
-/*
- * Jenkins declarative pipeline for building and deploying the portfolio web site.
- *
- * The pipeline includes stages for running unit tests, building the Docker image,
- * pushing the image to Docker Hub, and deploying to the web server via SSH.
- * Secrets such as Docker Hub credentials and SSH keys should be stored in the
- * Jenkins credentials store.  The pipeline uses environment variables defined
- * in the Jenkins job (e.g., REGISTRY, IMAGE_NAME, SERVER_HOST, SERVER_USER).
- */
+// In the Deploy stage, change to:
+stage('Deploy') {
+    steps {
+        sshagent(credentials: [SSH_CRED]) {
+            sh """
+            ssh -o StrictHostKeyChecking=no nik0@${SERVER_HOST} '
+            cd ${REMOTE_DIR}
+            
+            # Check if nginx.conf exists, create if not
+            if [ ! -f nginx.conf ]; then
+                echo "Creating nginx.conf..."
+                cat > nginx.conf << "NGINXCONF"
+events {
+    worker_connections 1024;
+}
 
-pipeline {
-    agent any
-
-    environment {
-        // Docker Hub registry (e.g., docker.io/<username>)
-        REGISTRY = credentials('docker-registry')
-        // Name of the Docker image (without tag)
-        IMAGE_NAME = 'portfolio-app'
-        // SSH credential ID for connecting to the web server
-        SSH_CRED = 'web-server-ssh'
-        // Compose project directory on the server
-        REMOTE_DIR = '/home/nik0/gabadueka'
-        // Tag for the image; using the Git commit SHA provides traceability
-        COMMIT_HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-        IMAGE_TAG = "${REGISTRY}/${IMAGE_NAME}:${COMMIT_HASH}"
-    }
-
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Build Image') {
-            steps {
-                script {
-                    // FIXED: Build from current directory (.), not app/Dockerfile app
-                    sh "docker build -t ${IMAGE_TAG} ."
-                }
-            }
-        }
-
-        stage('Push Image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                    sh "docker push ${IMAGE_TAG}"
-                }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                // Use the SSH agent plugin to connect to the web server
-                sshagent(credentials: [SSH_CRED]) {
-                    // FIXED: Use docker compose (new syntax) and updated REMOTE_DIR
-                    sh "ssh -o StrictHostKeyChecking=no nik0@${SERVER_HOST} 'cd ${REMOTE_DIR} && git pull && docker compose pull && docker compose up -d'"
-                }
-            }
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    server {
+        listen 80;
+        server_name _;
+        root /var/www/html;
+        index index.html;
+        
+        location / {
+            try_files \$uri \$uri/ =404;
         }
     }
-    
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
+}
+NGINXCONF
+            fi
+            
+            # Pull images and restart
+            docker compose pull
+            docker compose down
+            docker compose up -d --build
+            '
+            """
         }
     }
 }

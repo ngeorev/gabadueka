@@ -1,14 +1,17 @@
+# Use official Nginx image
 FROM nginx:alpine
 
-RUN apk add --no-cache php php-fpm php-mysqli php-json
+# Copy website files to Nginx's html directory
+COPY . /usr/share/nginx/html
 
-RUN mkdir -p /run/nginx
+# Create a directory for the quiz PHP file (if you want to handle it differently)
+RUN mkdir -p /usr/share/nginx/html
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY . /var/www/html
+# Set proper permissions
+RUN chmod -R 755 /usr/share/nginx/html
 
-RUN sed -i 's|;listen = 127.0.0.1:9000|listen = 9000|' /etc/php*/php-fpm.d/www.conf
-
+# Expose port 80
 EXPOSE 80
 
-CMD php-fpm & nginx -g "daemon off;"
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
