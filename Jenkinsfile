@@ -19,7 +19,7 @@ pipeline {
         // SSH credential ID for connecting to the web server
         SSH_CRED = 'web-server-ssh'
         // Compose project directory on the server
-        REMOTE_DIR = '/opt/portfolio_site'
+        REMOTE_DIR = '/home/nik0/gabadueka'
         // Tag for the image; using the Git commit SHA provides traceability
         COMMIT_HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
         IMAGE_TAG = "${REGISTRY}/${IMAGE_NAME}:${COMMIT_HASH}"
@@ -32,21 +32,11 @@ pipeline {
             }
         }
 
-     //   stage('Run Unit Tests') {
-     //       steps {
-                // Use a Python container to install dependencies and run tests
-      //          docker.image('python:3.12-slim').inside {
-      //              sh 'pip install -r app/requirements.txt pytest'
-     //               sh 'pytest -q tests'
-       //         }
-     //       }
-    //    }
-
         stage('Build Image') {
             steps {
                 script {
-                    // Build the application image; the context is the app directory
-                    sh "docker build -t ${IMAGE_TAG} -f app/Dockerfile app"
+                    // FIXED: Build from current directory (.), not app/Dockerfile app
+                    sh "docker build -t ${IMAGE_TAG} ."
                 }
             }
         }
@@ -64,9 +54,19 @@ pipeline {
             steps {
                 // Use the SSH agent plugin to connect to the web server
                 sshagent(credentials: [SSH_CRED]) {
-                    sh "ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_HOST} 'cd ${REMOTE_DIR} && git pull && docker-compose pull && docker-compose up -d'"
+                    // FIXED: Use docker compose (new syntax) and updated REMOTE_DIR
+                    sh "ssh -o StrictHostKeyChecking=no nik0@${SERVER_HOST} 'cd ${REMOTE_DIR} && git pull && docker compose pull && docker compose up -d'"
                 }
             }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
