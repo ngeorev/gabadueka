@@ -7,7 +7,7 @@ pipeline {
         // SSH credential ID for connecting to the web server
         SSH_CRED = 'web-server-ssh'
         // Docker registry credential ID (used with withCredentials)
-       // DOCKER_CRED = 'docker-credentials'
+        DOCKER_CRED = 'docker-credentials'
         // Docker Hub registry (e.g., docker.io/<username>)
         REGISTRY = credentials('docker-registry')
         // Host and user secrets
