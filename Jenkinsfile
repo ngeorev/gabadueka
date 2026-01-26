@@ -2,11 +2,21 @@ pipeline {
     agent any
 
     environment {
+        // Docker image name
         IMAGE_NAME = 'gabadueka'
+        // SSH credential ID for connecting to the web server
         SSH_CRED = 'web-server-ssh'
+        // Docker registry credential ID (used with withCredentials)
+       // DOCKER_CRED = 'docker-credentials'
+        // Docker Hub registry (e.g., docker.io/<username>)
+        REGISTRY = credentials('docker-registry')
+        // Host and user secrets
         SSH_HOST_CRED = 'host'
         SSH_USER_CRED = 'User'
-        REMOTE_DIR = "${env.REMOTE_DIR}" // use the pipeline environment variable
+        // Tag for the image; using the Git commit SHA provides traceability
+        COMMIT_HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+        IMAGE_TAG = "${REGISTRY}/${IMAGE_NAME}:${COMMIT_HASH}"
+        
     }
 
     stages {
@@ -16,31 +26,21 @@ pipeline {
             }
         }
 
-        stage('Prepare') {
+        stage('Build Image') {
             steps {
                 script {
-                    // Short commit hash
-                    env.COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    sh """
+                        docker build -t '${IMAGE_TAG}' -f Dockerfile .
+                    """
                 }
             }
         }
 
-        stage('Build & Push Image') {
+        stage('Push Image') {
             steps {
-                withCredentials([
-                    string(credentialsId: 'docker-registry', variable: 'REGISTRY'),
-                    usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')
-                ]) {
-                    script {
-                        env.IMAGE_TAG = "${REGISTRY}/${IMAGE_NAME}:${COMMIT_HASH}"
-
-                        // Build Docker image
-                        sh "docker build -t '${IMAGE_TAG}' -f Dockerfile ."
-
-                        // Login & push to Docker Hub
-                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                        sh "docker push '${IMAGE_TAG}'"
-                    }
+                withCredentials([usernamePassword(credentialsId: DOCKER_CRED, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                    sh "docker push '${IMAGE_TAG}'"
                 }
             }
         }
@@ -54,7 +54,7 @@ pipeline {
                     sshagent([SSH_CRED]) {
                         sh """
                             ssh -o StrictHostKeyChecking=no \$SSH_USER@\$SSH_HOST \
-                            'cd \$REMOTE_DIR && docker-compose pull && docker-compose up -d'
+                            'cd ${REMOTE_DIR} && git pull && docker-compose pull && docker-compose up -d'
                         """
                     }
                 }
