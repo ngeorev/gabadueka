@@ -40,15 +40,13 @@ pipeline {
         stage('Deploy') {
             steps {
                 withCredentials([
-                    string(credentialsId: 'host', variable: 'SSH_HOST'),
-                    string(credentialsId: 'User', variable: 'SSH_USER')
+                    string(credentialsId: 'host', variable: 'SERVER_HOST'),
+                    string(credentialsId: 'User', variable: 'SERVER_USER')
                 ]) {
-                    sshagent([SSH_CRED]) {
-                        sh """
-                            ssh -o StrictHostKeyChecking=no \$SSH_USER@\$SSH_HOST \
-                            'cd \${REMOTE_DIR} && docker compose pull && docker compose up -d'
-                        """
-                    }
+                    sh """
+                        ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST \\
+                        'cd $REMOTE_DIR && git pull && docker compose pull && docker compose up -d'
+                    """
                 }
             }
         }
