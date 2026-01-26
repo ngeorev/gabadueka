@@ -5,7 +5,7 @@ services:
     build: .  # Changed from 'image: nginx:alpine' to use Dockerfile
     container_name: my-website-nginx
     ports:
-      - "8080:80"
+      - "80:80"
     # Remove these volumes in production, or keep for development
     # volumes:
     #   - ./:/var/www/html
