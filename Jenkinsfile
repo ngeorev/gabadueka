@@ -44,7 +44,7 @@ pipeline {
             steps {
                 withCredentials([
                     string(credentialsId: 'host', variable: 'SSH_HOST'),
-                    string(credentialsId: 'user', variable: 'SSH_USER') 
+                    string(credentialsId: 'User', variable: 'SSH_USER') 
                 ]) {
                     sshagent(['web-server-ssh']) {
                         sh """
