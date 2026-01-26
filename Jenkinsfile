@@ -6,8 +6,6 @@ pipeline {
         IMAGE_NAME = 'gabadueka'
         // SSH credential ID for connecting to the web server
         SSH_CRED = 'web-server-ssh'
-        // Compose project directory on the server
-        REMOTE_DIR = '/opt/portfolio_site'
         // Docker registry credential ID (used with withCredentials)
         DOCKER_CRED = 'docker-credentials'
         // Docker registry (secret text)
