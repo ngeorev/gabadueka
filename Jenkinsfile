@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     // Build the application image; the context is the app directory
-                    sh "docker build -t ${IMAGE_TAG} -f Dockerfile"
+                    sh "docker build -t ${IMAGE_TAG} -f Dockerfile ."
                 }
             }
         }
