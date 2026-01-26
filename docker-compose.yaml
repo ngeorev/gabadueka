@@ -1,15 +1,9 @@
-version: '3.8'
-
 services:
   web:
-    build: .  # Changed from 'image: nginx:alpine' to use Dockerfile
-    container_name: my-website-nginx
+    image: gabadueka/gabadueka:latest
+    container_name: gabadueka-nginx
     ports:
       - "80:80"
-    # Remove these volumes in production, or keep for development
-    # volumes:
-    #   - ./:/var/www/html
-    #   - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - php
     networks:
@@ -17,7 +11,7 @@ services:
 
   php:
     image: php:8.2-fpm-alpine
-    container_name: my-website-php
+    container_name: gabadueka-php
     volumes:
       - ./:/var/www/html  # In production, this should be a named volume
     networks:
