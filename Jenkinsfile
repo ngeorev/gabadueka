@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Docker image name
-        IMAGE_NAME = 'portfolio-app'
+        IMAGE_NAME = 'gabadueka'
         // SSH credential ID for connecting to the web server
         SSH_CRED = 'web-server-ssh'
         // Compose project directory on the server
