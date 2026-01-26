@@ -7,7 +7,6 @@ pipeline {
         REGISTRY = credentials('docker-registry')
         SSH_HOST_CRED = 'host'
         SSH_USER_CRED = 'User'
-        REMOTE_DIR = '/opt/portfolio_site'
         // DOCKER_CRED is in Credentials Manager and will be used in withCredentials
     }
 
