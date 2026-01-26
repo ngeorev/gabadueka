@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     // Build the application image; the context is the app directory
-                    sh "docker build -t ${IMAGE_TAG} -f Dockerfile ."
+                    sh "docker build -t ${IMAGE_TAG} -f Dockerfile"
                 }
             }
         }
@@ -42,9 +42,16 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                // Use the SSH agent plugin to connect to the web server
-                sshagent(credentials: [SSH_CRED]) {
-                    sh "ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_HOST} 'cd ${REMOTE_DIR} && git pull && docker-compose pull && docker-compose up -d'"
+                withCredentials([
+                    string(credentialsId: 'host', variable: 'SSH_HOST'),
+                    string(credentialsId: 'user', variable: 'SSH_USER') 
+                ]) {
+                    sshagent(['web-server-ssh']) {
+                        sh """
+                            ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST \
+                            'cd /opt/portfolio_site && docker-compose pull && docker-compose up -d'
+                        """
+                    }
                 }
             }
         }
