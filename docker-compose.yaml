@@ -5,17 +5,28 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - php
+      php:
+        condition: service_healthy
     networks:
       - web-network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   php:
     image: php:8.2-fpm-alpine
     container_name: gabadueka-php
     volumes:
-      - ./:/var/www/html  # In production, this should be a named volume
+      - .:/var/www/html
     networks:
       - web-network
+    healthcheck:
+      test: ["CMD", "php-fpm", "-t"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
 networks:
   web-network:
