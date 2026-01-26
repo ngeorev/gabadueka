@@ -46,7 +46,7 @@ pipeline {
                     sshagent([SSH_CRED]) {
                         sh """
                             ssh -t -o StrictHostKeyChecking=no \$SSH_USER@\$SSH_HOST \
-                            'cd \${REMOTE_DIR} && docker-compose pull && docker-compose up -d'
+                            'cd \${REMOTE_DIR} && docker compose pull && docker compose up -d'
                         """
                     }
                 }
