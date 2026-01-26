@@ -73,7 +73,7 @@ pipeline {
                 -o StrictHostKeyChecking=no \
                 -o UserKnownHostsFile=/dev/null \
                 "$SSH_USER@$SERVER_HOST" \
-                "cd '$REMOTE_DIR' && docker compose pull && docker compose up -d"
+                "cd '$REMOTE_DIR' && git pull && docker compose pull && docker compose up -d"
             '''
           }
         }
