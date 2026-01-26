@@ -13,30 +13,16 @@ pipeline {
         // Host and user secrets
         SSH_HOST_CRED = 'host'
         SSH_USER_CRED = 'User'
+        // Tag for the image; using the Git commit SHA provides traceability
+        COMMIT_HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+        IMAGE_TAG = "${REGISTRY}/${IMAGE_NAME}:${COMMIT_HASH}"
+        
     }
 
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
-            }
-        }
-
-        stage('Prepare') {
-            steps {
-                script {
-                    // Get the short commit hash
-                    env.COMMIT_HASH = sh(
-                        script: 'git rev-parse --short HEAD',
-                        returnStdout: true
-                    ).trim()
-                    
-                    // Get registry from Jenkins secret
-                    env.REGISTRY = credentials('docker-registry')
-                    
-                    // Full image tag
-                    env.IMAGE_TAG = "${env.REGISTRY}/${env.IMAGE_NAME}:${env.COMMIT_HASH}"
-                }
             }
         }
 
