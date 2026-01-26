@@ -23,7 +23,7 @@ pipeline {
             returnStdout: true
           ).trim()
 
-          env.IMAGE_TAG = "${REGISTRY}/${IMAGE_NAME}:${COMMIT_HASH}"
+          env.IMAGE_TAG = "${REGISTRY}/${IMAGE_NAME}:latest"
 
           sh '''#!/bin/bash -e
             docker build -t "$IMAGE_TAG" .
